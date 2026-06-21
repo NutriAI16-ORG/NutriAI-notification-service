@@ -10,6 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.config import get_settings
 from app.database import get_db_session
@@ -413,7 +414,7 @@ def send_email_smtp(to_email: str, subject: str, html_content: str):
             server.sendmail(settings.SMTP_FROM_EMAIL, to_email, msg.as_string())
 
         logger.info(f"Email sent via SMTP to {to_email}")
-    except Exception as e:
+    except (smtplib.SMTPException, OSError) as e:
         logger.error(f"SMTP email error: {e}")
         raise
 
@@ -489,15 +490,15 @@ async def service_bus_consumer():
                                 await receiver.complete_message(msg)
                                 logger.info(f"Processed meal reminder for {user_email}: {meal_type} - {day_name}")
 
-                            except Exception as e:
+                            except (SQLAlchemyError, ValueError, KeyError) as e:
                                 logger.error(f"Error processing message: {e}")
                                 await receiver.abandon_message(msg)
 
-                    except Exception as e:
+                    except (OSError, RuntimeError) as e:
                         logger.error(f"Service Bus receive error: {e}")
                         await asyncio.sleep(10)
 
     except ImportError:
         logger.warning("azure-servicebus not installed, consumer disabled")
-    except Exception as e:
+    except (OSError, RuntimeError) as e:
         logger.error(f"Service Bus consumer fatal error: {e}")
