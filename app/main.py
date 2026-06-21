@@ -40,7 +40,8 @@ async def lifespan(app: FastAPI):
     try:
         await consumer_task
     except asyncio.CancelledError:
-        pass
+        logger.info("Service Bus consumer task was successfully cancelled.")
+        raise
     logger.info("Notification Service shutting down...")
 
 
