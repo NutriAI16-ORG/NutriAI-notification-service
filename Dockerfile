@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends gcc libpq-dev c
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all files and transfer ownership to non-root user
+# Copy all files and transfer ownership to non-root user.
 COPY --chown=appuser:appgroup . .
 
 # Switch to non-root user
