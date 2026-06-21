@@ -474,8 +474,12 @@ async def service_bus_consumer():
                                         notification_msg = f"Meal reminder: {meal_type} for {day_name} has been sent to your email."
                                         notification_icon = "fa-utensils"
 
+                                    import uuid as _uuid
+                                    raw_uid = body.get("user_id")
+                                    uid_val = _uuid.UUID(raw_uid) if isinstance(raw_uid, str) else raw_uid
+
                                     notification = Notification(
-                                        user_id=body.get("user_id"),
+                                        user_id=uid_val,
                                         message=notification_msg,
                                         type="success",
                                         icon=notification_icon,
