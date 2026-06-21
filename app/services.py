@@ -11,9 +11,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
-from config import get_settings
-from database import get_db_session
-from models import Notification
+from app.config import get_settings
+from app.database import get_db_session
+from app.models import Notification
 
 logger = logging.getLogger(__name__)
 settings = get_settings()

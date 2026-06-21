@@ -7,8 +7,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from database import get_db
-from models import Notification
+from app.database import get_db
+from app.models import Notification
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
