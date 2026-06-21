@@ -15,7 +15,13 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/notifications", tags=["Notifications"])
 
 
-@router.get("/list")
+@router.get(
+    "/list",
+    responses={
+        400: {"description": "Invalid user ID format"},
+        401: {"description": "Not authenticated"},
+    }
+)
 async def list_notifications(request: Request, db: Session = Depends(get_db)):
     user_id_str = request.headers.get("X-User-ID")
     if not user_id_str:
@@ -55,7 +61,13 @@ async def list_notifications(request: Request, db: Session = Depends(get_db)):
     }
 
 
-@router.post("/{notification_id}/read")
+@router.post(
+    "/{notification_id}/read",
+    responses={
+        400: {"description": "Invalid format for user ID or notification ID"},
+        401: {"description": "Not authenticated"},
+    }
+)
 async def mark_as_read(notification_id: str, request: Request, db: Session = Depends(get_db)):
     user_id_str = request.headers.get("X-User-ID")
     if not user_id_str:
@@ -78,7 +90,13 @@ async def mark_as_read(notification_id: str, request: Request, db: Session = Dep
     return {"message": "Notification marked as read."}
 
 
-@router.get("/count")
+@router.get(
+    "/count",
+    responses={
+        400: {"description": "Invalid user ID format"},
+        401: {"description": "Not authenticated"},
+    }
+)
 async def notification_count(request: Request, db: Session = Depends(get_db)):
     user_id_str = request.headers.get("X-User-ID")
     if not user_id_str:
