@@ -30,7 +30,7 @@ async def list_notifications(request: Request, db: Session = Depends(get_db)):
 
     unread_count = db.query(func.count(Notification.id)).filter(
         Notification.user_id == user_id,
-        Notification.is_read == False,
+        Notification.is_read.is_(False),
     ).scalar()
 
     return {
@@ -76,7 +76,7 @@ async def notification_count(request: Request, db: Session = Depends(get_db)):
 
     count = db.query(func.count(Notification.id)).filter(
         Notification.user_id == user_id,
-        Notification.is_read == False,
+        Notification.is_read.is_(False),
     ).scalar()
 
     return {"count": count}
