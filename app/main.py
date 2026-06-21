@@ -14,6 +14,7 @@ from app.config import get_settings
 from app.database import Base, engine, check_db_health
 from app.routes import router
 from app.services import service_bus_consumer
+from sqlalchemy.exc import SQLAlchemyError
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ async def lifespan(app: FastAPI):
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables verified.")
-    except Exception as e:
+    except SQLAlchemyError as e:
         logger.warning(f"Database table creation check encountered an error (tables may already exist): {e}")
 
     # Start Service Bus consumer as background task
