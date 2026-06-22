@@ -425,20 +425,33 @@ def send_email(to_email: str, subject: str, html_content: str):
 
 
 async def service_bus_consumer():
-    """Background asyncio task that subscribes to Service Bus and processes meal reminders."""
-    if not settings.AZURE_SERVICE_BUS_CONNECTION_STRING:
-        logger.warning("Service Bus connection string not configured, consumer disabled")
-        return
+    """Background asyncio task that subscribes to Service Bus and processes meal reminders.
 
+    Authentication priority:
+      1. If AZURE_SERVICE_BUS_CONNECTION_STRING is set → use connection string (local dev / fallback).
+      2. Otherwise → use DefaultAzureCredential (AKS Workload Identity in production).
+    """
     try:
         from azure.servicebus.aio import ServiceBusClient as AsyncServiceBusClient
 
-        logger.info("Starting Service Bus consumer...")
+        if settings.AZURE_SERVICE_BUS_CONNECTION_STRING:
+            # --- Local dev / fallback: connection string auth ---
+            logger.info("Starting Service Bus consumer with connection string auth...")
+            sb_client = AsyncServiceBusClient.from_connection_string(
+                settings.AZURE_SERVICE_BUS_CONNECTION_STRING
+            )
+        else:
+            # --- Production: Workload Identity via DefaultAzureCredential ---
+            logger.info("Starting Service Bus consumer with DefaultAzureCredential (Workload Identity)...")
+            from azure.identity.aio import DefaultAzureCredential
+            credential = DefaultAzureCredential()
+            sb_client = AsyncServiceBusClient(
+                fully_qualified_namespace=settings.AZURE_SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE,
+                credential=credential,
+            )
 
-        async with AsyncServiceBusClient.from_connection_string(
-            settings.AZURE_SERVICE_BUS_CONNECTION_STRING
-        ) as client:
-            receiver = client.get_subscription_receiver(
+        async with sb_client:
+            receiver = sb_client.get_subscription_receiver(
                 topic_name=settings.AZURE_SERVICE_BUS_TOPIC_NAME,
                 subscription_name=settings.AZURE_SERVICE_BUS_SUBSCRIPTION_NAME,
             )
@@ -506,3 +519,4 @@ async def service_bus_consumer():
         logger.warning("azure-servicebus not installed, consumer disabled")
     except (OSError, RuntimeError) as e:
         logger.error(f"Service Bus consumer fatal error: {e}")
+

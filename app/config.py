@@ -8,8 +8,11 @@ class Settings(BaseSettings):
     APP_NAME: str = "NutriAI Notification Service"
     DATABASE_URL: str = "sqlite:///./test.db"
 
+    # Service Bus — connection string takes priority (local dev / fallback)
+    # In production (AKS), leave blank and set AZURE_SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE instead.
     AZURE_SERVICE_BUS_CONNECTION_STRING: str = ""
-    AZURE_SERVICE_BUS_TOPIC_NAME: str = "meal-reminders"
+    AZURE_SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE: str = ""  # e.g. "nutriai-sb-prod.servicebus.windows.net"
+    AZURE_SERVICE_BUS_TOPIC_NAME: str = "email-notifications"
     AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: str = "email-sender"
 
     EMAIL_PROVIDER: str = "smtp"  # "smtp" or "sendgrid"
