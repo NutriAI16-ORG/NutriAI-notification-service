@@ -515,8 +515,8 @@ async def service_bus_consumer():
                         logger.error(f"Service Bus receive error: {e}")
                         await asyncio.sleep(10)
 
-    except ImportError:
-        logger.warning("azure-servicebus not installed, consumer disabled")
+    except ImportError as e:
+        logger.warning(f"azure-servicebus or its dependencies (like aiohttp) not installed, consumer disabled. Details: {e}", exc_info=True)
     except (OSError, RuntimeError) as e:
         logger.error(f"Service Bus consumer fatal error: {e}")
 
