@@ -431,6 +431,10 @@ async def service_bus_consumer():
       1. If AZURE_SERVICE_BUS_CONNECTION_STRING is set → use connection string (local dev / fallback).
       2. Otherwise → use DefaultAzureCredential (AKS Workload Identity in production).
     """
+    if not settings.AZURE_SERVICE_BUS_CONNECTION_STRING and not settings.AZURE_SERVICE_BUS_FULLY_QUALIFIED_NAMESPACE:
+        logger.warning("Neither Service Bus connection string nor fully qualified namespace configured. Consumer disabled.")
+        return
+
     try:
         from azure.servicebus.aio import ServiceBusClient as AsyncServiceBusClient
 
