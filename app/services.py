@@ -179,22 +179,22 @@ def build_welcome_email_html(data: dict) -> str:
                     <div class="timing-list">
                         <div class="timing-item">
                             <span class="timing-label">🌅 Breakfast</span>
-                            <span class="timing-value">8:00 AM UTC</span>
+                            <span class="timing-value">8:00 AM IST</span>
                             <span class="timing-desc">(Start with key energy foods)</span>
                         </div>
                         <div class="timing-item">
                             <span class="timing-label">☀️ Lunch</span>
-                            <span class="timing-value">1:00 PM UTC</span>
+                            <span class="timing-value">1:00 PM IST</span>
                             <span class="timing-desc">(Stay fueled and alert)</span>
                         </div>
                         <div class="timing-item">
                             <span class="timing-label">🍎 Snacks</span>
-                            <span class="timing-value">4:00 PM UTC</span>
+                            <span class="timing-value">4:00 PM IST</span>
                             <span class="timing-desc">(Healthy mid-day boost)</span>
                         </div>
                         <div class="timing-item">
                             <span class="timing-label">🌙 Dinner</span>
-                            <span class="timing-value">7:00 PM UTC</span>
+                            <span class="timing-value">8:00 PM IST</span>
                             <span class="timing-desc">(Nourishing recovery meal)</span>
                         </div>
                     </div>
