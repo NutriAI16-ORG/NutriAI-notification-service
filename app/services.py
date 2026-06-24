@@ -49,7 +49,7 @@ def build_welcome_email_html(data: dict) -> str:
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             }}
             .header {{
-                background-color: #0F172A;
+                background-color: #0F766E;
                 padding: 32px 24px;
                 text-align: center;
             }}
@@ -61,7 +61,7 @@ def build_welcome_email_html(data: dict) -> str:
                 letter-spacing: -0.02em;
             }}
             .header p {{
-                color: #94A3B8;
+                color: #CCFBF1;
                 margin: 8px 0 0;
                 font-size: 14px;
             }}
@@ -320,7 +320,7 @@ def build_meal_reminder_html(data: dict) -> str:
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             }}
             .header {{
-                background-color: #0F172A;
+                background-color: #0F766E;
                 padding: 32px 24px;
                 text-align: center;
             }}
@@ -332,7 +332,7 @@ def build_meal_reminder_html(data: dict) -> str:
                 letter-spacing: -0.02em;
             }}
             .header p {{
-                color: #94A3B8;
+                color: #CCFBF1;
                 margin: 8px 0 0;
                 font-size: 14px;
             }}
